@@ -1,6 +1,8 @@
 package com.example.tpboard.controller;
 
+import com.example.tpboard.dto.TokenInfo;
 import com.example.tpboard.dto.request.BoardRequest;
+import com.example.tpboard.dto.request.MemberLoginRequestDto;
 import com.example.tpboard.dto.request.MemberRequest;
 import com.example.tpboard.dto.response.BoardResponse;
 import com.example.tpboard.dto.response.MemberResponse;
@@ -17,18 +19,25 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/member")
+@RequestMapping("members")
 public class MemberController {
 
     private final MemberService memberService;
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @PostMapping
+    @PostMapping("/account")
     public ResponseEntity<Void> create(@RequestBody MemberRequest dto) {
         memberService.create(dto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();
+    }
+
+    @PostMapping("/login")
+    public TokenInfo login(@RequestBody MemberLoginRequestDto dto) {
+        String accountId = dto.getAccountId();
+        String password = dto.getPassword();
+        return memberService.login(accountId, password);
     }
 
     @GetMapping("{id}")
