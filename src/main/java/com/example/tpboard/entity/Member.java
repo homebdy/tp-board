@@ -1,9 +1,6 @@
 package com.example.tpboard.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,18 +22,23 @@ public class Member implements UserDetails {
 
     @Column(unique = true)
     private String accountId;
+    @Setter
     private String password;
     private String email;
+    private int age;
+    private int gender;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles = new ArrayList<>();
+    private final List<String> roles = new ArrayList<>();
 
     @Builder
-    public Member(Long id, String accountId, String password, String email) {
+    public Member(Long id, String accountId, String password, String email, int age, int gender) {
         this.id = id;
         this.accountId = accountId;
         this.password = password;
         this.email = email;
+        this.age = age;
+        this.gender = gender;
     }
 
     @Override
